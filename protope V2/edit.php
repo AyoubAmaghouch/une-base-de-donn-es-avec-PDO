@@ -11,7 +11,6 @@ if (!$id) {
     die("ID not found");
 }
 
-// جلب المنتج من DB
 $product = getProductById($pdo, $id);
 
 if (!$product) {
