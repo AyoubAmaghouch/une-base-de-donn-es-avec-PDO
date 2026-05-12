@@ -1,0 +1,340 @@
+/* =========================
+   VARIABLES
+========================= */
+
+:root{
+
+    --primary-color: #3498db;
+
+    --secondary-color: #2ecc71;
+
+    --danger-color: #e74c3c;
+
+    --bg-color: #f4f4f4;
+
+    --white: #ffffff;
+
+    --text-color: #333;
+
+    --padding: 15px;
+
+    --radius: 10px;
+
+    --shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   BODY
+========================= */
+
+body{
+
+    font-family: Arial, sans-serif;
+
+    background-color: var(--bg-color);
+
+    color: var(--text-color);
+
+    margin: 0;
+
+    padding: 20px;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+h1{
+
+    text-align: center;
+
+    color: var(--primary-color);
+
+    animation: slideDown 1s ease;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+table{
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background-color: var(--white);
+
+    box-shadow: var(--shadow);
+
+    overflow: hidden;
+
+    animation: fadeIn 1s ease;
+}
+
+/* =========================
+   CELLS
+========================= */
+
+th,
+td{
+
+    padding: var(--padding);
+
+    text-align: center;
+
+    border-bottom: 1px solid #ddd;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+th{
+
+    background-color: var(--primary-color);
+
+    color: var(--white);
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+img{
+
+    width: 100px;
+
+    height: 100px;
+
+    object-fit: cover;
+
+    border-radius: var(--radius);
+
+    transition: transform 0.4s ease;
+}
+
+img:hover{
+
+    transform: scale(1.08) rotate(2deg);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+a{
+
+    text-decoration: none;
+}
+
+/* ADD BUTTON */
+
+.add-btn{
+
+    display: inline-block;
+
+    background-color: var(--primary-color);
+
+    color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 5px;
+
+    margin-bottom: 20px;
+
+    transition: 0.4s ease;
+}
+
+.add-btn:hover{
+
+    background-color: var(--secondary-color);
+
+    transform: translateY(-3px);
+}
+
+/* UPDATE BUTTON */
+
+.update-btn{
+
+    background-color: var(--secondary-color);
+
+    color: white;
+
+    padding: 8px 12px;
+
+    border-radius: 5px;
+
+    transition: 0.3s;
+}
+
+.update-btn:hover{
+
+    opacity: 0.8;
+}
+
+/* DELETE BUTTON */
+
+.delete-btn{
+
+    background-color: var(--danger-color);
+
+    color: white;
+
+    padding: 8px 12px;
+
+    border-radius: 5px;
+
+    transition: 0.3s;
+}
+
+.delete-btn:hover{
+
+    opacity: 0.8;
+}
+
+/* =========================
+   FORM
+========================= */
+
+form{
+
+    background-color: white;
+
+    padding: 30px;
+
+    max-width: 500px;
+
+    margin: auto;
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    animation: fadeIn 1s ease;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+select{
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background-color: var(--primary-color);
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.4s ease;
+}
+
+button:hover{
+
+    background-color: var(--secondary-color);
+
+    transform: scale(1.03);
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity: 0;
+    }
+
+    to{
+
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown{
+
+    from{
+
+        opacity: 0;
+
+        transform: translateY(-30px);
+    }
+
+    to{
+
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   MEDIA QUERY
+========================= */
+
+@media (max-width: 768px){
+
+    body{
+
+        padding: 10px;
+    }
+
+    table{
+
+        font-size: 14px;
+    }
+
+    th,
+    td{
+
+        padding: 8px;
+    }
+
+    img{
+
+        width: 70px;
+
+        height: 70px;
+    }
+
+    .add-btn{
+
+        width: 100%;
+
+        text-align: center;
+    }
+
+    form{
+
+        width: 90%;
+    }
+}
