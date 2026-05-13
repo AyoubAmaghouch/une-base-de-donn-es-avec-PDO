@@ -2,87 +2,110 @@
 
 require_once "../db.php";
 
-$id = $_GET['id']; // Récupérer l'id de la recette à modifier depuis l'URL
+require_once "../functions.php";
 
-$sql = "SELECT * FROM recipes WHERE id = ?";
-$stmt = $pdo->prepare($sql); //knwjdo query 
-$stmt->execute([$id]);
+// GET ID
 
-$recipe = $stmt->fetch(PDO::FETCH_ASSOC);
+$id = $_GET['id'];
 
-$categories = $pdo->query("SELECT * FROM categories")
-                  ->fetchAll(PDO::FETCH_ASSOC); //select categories.
+// GET RECIPE
 
-if(isset($_POST['submit'])) {
+$recipe = getRecipeById($pdo, $id);
 
-    $name = $_POST['name'];
-    $prep_time = $_POST['prep_time'];
-    $category_id = $_POST['category_id'];
+// GET CATEGORIES
 
-    $sql = "UPDATE recipes
-            SET name = ?,
-                prep_time = ?,
-                category_id = ?,
-                edited_at = NOW()
-            WHERE id = ?";
+$categories = getCategories($pdo);
 
-    $stmt = $pdo->prepare($sql);
+// SUBMIT
 
-    $stmt->execute([
+if(isset($_POST['submit'])){
+
+    $name = sanitize($_POST['name']);
+
+    $prep_time = sanitize($_POST['prep_time']);
+
+    $category_id = sanitize($_POST['category_id']);
+
+    updateRecipe(
+        $pdo,
         $name,
         $prep_time,
         $category_id,
         $id
-    ]);
+    );
 
     header("Location: read.php");
+
+    exit;
 }
 
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Modifier</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
 </head>
+
 <body>
 
 <h1>Modifier recette</h1>
 
 <form method="POST">
 
-<input type="text"
-       name="name"
-       value="<?= $recipe['name'] ?>">
+    <input type="text"
+           name="name"
+           value="<?= $recipe['name'] ?>">
 
-<br><br>
+    <br><br>
 
-<input type="number"
-       name="prep_time"
-       value="<?= $recipe['prep_time'] ?>">
+    <input type="number"
+           name="prep_time"
+           value="<?= $recipe['prep_time'] ?>">
 
-<br><br>
+    <br><br>
 
-<select name="category_id">
+    <select name="category_id">
 
-<?php foreach($categories as $category): ?> 
+        <?php foreach($categories as $category): ?>
 
-<option value="<?= $category['id'] ?>"
-<?php if($category['id'] == $recipe['category_id']) echo "selected"; ?>>
+        <option value="<?= $category['id'] ?>"
 
-<?= $category['name'] ?>
+        <?php
+        if($category['id']
+           == $recipe['category_id']){
 
-</option>
+            echo "selected";
+        }
+        ?>>
 
-<?php endforeach; ?>
+        <?= $category['name'] ?>
 
-</select>
+        </option>
 
-<br><br>
+        <?php endforeach; ?>
 
-<button type="submit" name="submit">
-    Modifier
-</button>
+    </select>
+
+    <br><br>
+
+    <button type="submit"
+            name="submit">
+
+        Modifier
+
+    </button>
 
 </form>
 

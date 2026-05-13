@@ -2,19 +2,31 @@
 
 require_once "../db.php";
 
-$categories = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC); // Récupérer row de array
+require_once "../functions.php";
 
-if(isset($_POST['submit'])) {
+// GET CATEGORIES
 
-    $name = $_POST['name']; // Récupérer les données du formulaire
-    $prep_time = $_POST['prep_time'];// Récupérer les données du formulaire
-    $category_id = $_POST['category_id']; // Récupérer l'id de la catégorie sélectionnée
+$categories = getCategories($pdo);
+
+// SUBMIT
+
+if(isset($_POST['submit'])){
+
+    $name = sanitize($_POST['name']);
+
+    $prep_time = sanitize($_POST['prep_time']);
+
+    $category_id = sanitize($_POST['category_id']);
 
     $image = "";
 
-    if(isset($_FILES['image']) && $_FILES['image']['error'] == 0) { // Vérifier si une image a été téléchargée sans erreur
+    // IMAGE
 
-        $image = time() . "_" . $_FILES['image']['name']; //files variable fore files / and time 1715520000
+    if(isset($_FILES['image'])
+       && $_FILES['image']['error'] == 0){
+
+        $image = time() . "_"
+               . $_FILES['image']['name'];
 
         move_uploaded_file(
             $_FILES['image']['tmp_name'],
@@ -22,63 +34,86 @@ if(isset($_POST['submit'])) {
         );
     }
 
-    $sql = "INSERT INTO recipes(name, prep_time, image, category_id)
-            VALUES(?, ?, ?, ?)"; // ? palce holder
+    // CREATE
 
-    $stmt = $pdo->prepare($sql); // prépartion de query 
-
-    $stmt->execute([ // execute la query avec les données du formulaire
+    createRecipe(
+        $pdo,
         $name,
         $prep_time,
         $image,
         $category_id
-    ]);
+    );
 
     header("Location: read.php");
+
+    exit;
 }
 
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Ajouter</title>
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
 </head>
+
 <body>
 
 <h1>Ajouter une recette</h1>
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST"
+      enctype="multipart/form-data">
 
-<input type="text" name="name" placeholder="Nom">
+    <input type="text"
+           name="name"
+           placeholder="Nom">
 
-<br><br>
+    <br><br>
 
-<input type="number" name="prep_time" placeholder="Temps préparation">
+    <input type="number"
+           name="prep_time"
+           placeholder="Temps préparation">
 
-<br><br>
+    <br><br>
 
-<input type="file" name="image">
+    <input type="file"
+           name="image">
 
-<br><br>
+    <br><br>
 
-<select name="category_id">
+    <select name="category_id">
 
-<?php foreach($categories as $category): ?>
+        <?php foreach($categories as $category): ?>
 
-<option value="<?= $category['id'] ?>">
-    <?= $category['name'] ?>
-</option>
+        <option value="<?= $category['id'] ?>">
 
-<?php endforeach; ?>
+            <?= $category['name'] ?>
 
-</select>
+        </option>
 
-<br><br>
+        <?php endforeach; ?>
 
-<button type="submit" name="submit">
-    Ajouter
-</button>
+    </select>
+
+    <br><br>
+
+    <button type="submit"
+            name="submit">
+
+        Ajouter
+
+    </button>
 
 </form>
 

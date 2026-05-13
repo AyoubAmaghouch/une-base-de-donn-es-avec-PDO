@@ -2,12 +2,18 @@
 
 require_once "../db.php";
 
-$id = $_GET['id']; // Récupérer l'id de la recette à supprimer depuis l'URL
+require_once "../functions.php";
 
-$sql = "DELETE FROM recipes WHERE id = ?"; //  la requête SQL pour supprimer la recette avec l'id spécifié
+// GET ID
 
-$stmt = $pdo->prepare($sql); //SQL Injection
+$id = $_GET['id'];
 
-$stmt->execute([$id]);
+// DELETE
+
+deleteRecipe($pdo, $id);
+
+// REDIRECT
 
 header("Location: read.php");
+
+exit;

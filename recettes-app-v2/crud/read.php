@@ -1,113 +1,113 @@
+<?php
 
-    <?php
+require_once "../db.php";
 
-    require_once "../db.php";
+require_once "../functions.php";
 
-    $sql = "SELECT recipes.*, categories.name AS category_name
-            FROM recipes
-            LEFT JOIN categories
-            ON recipes.category_id = categories.id"; //rabt bin recipec w categories
+// GET RECIPES
 
-    $stmt = $pdo->query($sql);
+$recipes = getRecipes($pdo);
 
-    $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC); //jib all rows 
+?>
 
-    ?>
+<!DOCTYPE html>
+<html lang="fr">
 
-    <!DOCTYPE html>
-    <html lang="fr">
+<head>
 
-    <head>
+    <meta charset="UTF-8">
 
-        <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-        <meta name="viewport"
-            content="width=device-width, initial-scale=1.0">
+    <title>Liste des recettes</title>
 
-        <title>Liste des recettes</title>
+    <link rel="stylesheet"
+          href="../css/style.css">
 
-        <link rel="stylesheet" href="../css/style.css">
+</head>
 
-    </head>
+<body>
 
-    <body>
+<h1>Liste des recettes</h1>
 
-    <h1>Liste des recettes</h1>
+<a href="create.php"
+   class="add-btn">
 
-    <a href="create.php" class="add-btn">
-        Ajouter une recette
-    </a>
+   Ajouter une recette
 
-    <table>
+</a>
 
-        <tr>
-            <th>Nom</th>
-            <th>Image</th>
-            <th>Catégorie</th>
-            <th>Temps</th>
-            <th>Actions</th>
-        </tr>
+<table>
 
-        <?php foreach($recipes as $recipe): ?>
+    <tr>
 
-        <tr>
+        <th>Nom</th>
 
-            <!-- NOM -->
-            <td>
-                <?= $recipe['name'] ?>
-            </td>
+        <th>Image</th>
 
-            <!-- IMAGE -->
-            <td>
+        <th>Catégorie</th>
 
-                <?php if($recipe['image']): ?>
+        <th>Temps</th>
 
-                    <img src="../images/<?= $recipe['image'] ?>">
+        <th>Actions</th>
 
-                <?php else: ?>
+    </tr>
 
-                    Pas d'image
+    <?php foreach($recipes as $recipe): ?>
 
-                <?php endif; ?>
+    <tr>
 
-            </td>
+        <td>
+            <?= $recipe['name'] ?>
+        </td>
 
-            <!-- CATEGORIE -->
-            <td>
-                <?= $recipe['category_name'] ?>
-            </td>
+        <td>
 
-            <!-- TEMPS -->
-            <td>
-                <?= $recipe['prep_time'] ?> min
-            </td>
+            <?php if($recipe['image']): ?>
 
-            <!-- ACTIONS -->
-            <td>
+                <img src="../images/<?= $recipe['image'] ?>">
 
-                <a href="update.php?id=<?= $recipe['id'] ?>"
-                class="update-btn">
+            <?php else: ?>
 
-                Modifier
+                Pas d'image
 
-                </a>
+            <?php endif; ?>
 
-                <a href="delete.php?id=<?= $recipe['id'] ?>"
-                class="delete-btn"
-                onclick="return confirm('Supprimer cette recette ?')">
+        </td>
 
-                Supprimer
+        <td>
+            <?= $recipe['category_name'] ?>
+        </td>
 
-                </a>
+        <td>
+            <?= $recipe['prep_time'] ?> min
+        </td>
 
-            </td>
+        <td>
 
-        </tr>
+            <a href="update.php?id=<?= $recipe['id'] ?>"
+               class="update-btn">
 
-        <?php endforeach; ?>
+               Modifier
 
-    </table>
+            </a>
 
-    </body>
-    </html>
+            <a href="delete.php?id=<?= $recipe['id'] ?>"
+               class="delete-btn"
+               onclick="return confirm('Supprimer cette recette ?')">
 
+               Supprimer
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    <?php endforeach; ?>
+
+</table>
+
+</body>
+</html>

@@ -4,7 +4,7 @@ require "function.php";
 
 $errors = [];
 
-// جلب id
+// jibna id
 $id = $_POST['id'] ?? null;
 
 if (!$id) {
